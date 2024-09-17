@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Feedback</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+
+    <body>
+        <h1>Feedback Form</h1>
+        <form method="POST">
+            <label for="hotel_name">Hotel Name:</label>
+            <input type="text" id="hotel_name" name="hotel_name" required><br>
+
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required><br>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" required><br>
+
+            <!-- 14 Questions -->
+            {% for i in range(1, 15) %}
+            <label for="q{{i}}">Q{{i}}. {{ question_list[i-1] }}</label>
+            <select id="q{{i}}" name="q{{i}}" required>
+                <option value="Strongly Agree">Strongly Agree</option>
+                <option value="Agree">Agree</option>
+                <option value="Neutral">Neutral</option>
+                <option value="Disagree">Disagree</option>
+                <option value="Strongly Disagree">Strongly Disagree</option>
+            </select><br>
+            {% endfor %}
+
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </body>
+
+</html>
