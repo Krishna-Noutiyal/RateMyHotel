@@ -10,7 +10,27 @@
 
     <body>
         <h1>Thank You for Your Feedback!</h1>
-        <p>The predicted rating for your hotel is: {{ rating }}</p>
+        <p>Your overall rating for the hotel is: {{ rating }} out of 5.</p>
+
+        <!-- JavaScript for Text-to-Speech -->
+        <script>
+            // Function to speak the rating message
+            function speak(text) {
+                if ('speechSynthesis' in window) {
+                    var speech = new SpeechSynthesisUtterance(text);
+                    speech.lang = 'en-US';
+                    window.speechSynthesis.speak(speech);
+                } else {
+                    console.error("Text-to-Speech is not supported in this browser.");
+                }
+            }
+
+            // Tell the user their rating when the page loads
+            window.onload = function () {
+                const rating = "{{ rating }}"; // Injected by Flask
+                speak('Thank you for your feedback! Your overall rating for the hotel is ' + rating + ' out of 5.');
+            };
+        </script>
     </body>
 
 </html>

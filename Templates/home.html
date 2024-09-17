@@ -13,10 +13,58 @@
         <form method="POST">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required><br>
-            <button type="submit">Next</button>
+
+            <button type="submit">Submit</button>
         </form>
+
+        <!-- JavaScript for Text-to-Speech with 3-second delay and Indian English accent -->
+        <script>
+            function speak(text) {
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+
+                    // Get available voices
+                    const voices = window.speechSynthesis.getVoices();
+                    console.log(voices);
+
+                    // Find an Indian English voice (if available)
+                    const indianVoice = voices.find(voice =>
+                        voice.lang === 'en-IN' || voice.name.includes('Indian')
+                        // voice.name.includes("Google US English")
+                    );
+
+                    if (indianVoice) {
+                        utterance.voice = indianVoice;
+                    } else {
+                        console.warn('Indian English voice not found. Using default voice.');
+                    }
+
+                    // Adjust speech properties
+                    utterance.rate = 1;  // Normal speed
+                    utterance.pitch = 0.3; // Normal pitch
+
+                    // Speak the text
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    console.error("Text-to-Speech is not supported in this browser.");
+                }
+            }
+
+            // Greet the user after a 3-second delay when the page loads
+            window.onload = function () {
+                setTimeout(function () {
+                    speak('Welcome to the Hotel Feedback System! Please enter your name and email.');
+                }, 3000);  // 3000 milliseconds = 3 seconds
+            };
+
+            // Refresh the voice list after the voices are loaded
+            window.speechSynthesis.onvoiceschanged = function () {
+                window.speechSynthesis.getVoices(); // Ensure voices are loaded
+            };
+        </script>
     </body>
 
 </html>
