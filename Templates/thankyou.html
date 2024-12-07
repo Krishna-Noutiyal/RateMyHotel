@@ -8,10 +8,30 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
 
-    <body>
-        <h1>Thank You for Your Feedback!</h1>
-        <p>Your overall rating for the hotel is: {{ rating }} out of 5.</p>
+    <style>
+        body{
+            
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h1{
+            font-size: 3rem;
+        }
+        p{
+            font-size: 2rem;
+        }
+        span{
+            font-weight: bold;
 
+        }
+    </style>
+    <body>
+        <h1 >Thank You for Your Feedback!</h1>
+        <p style="text-align: center;">After Analysing your review we think you gave us <br> <span style="color: red;">{{ rating }}</span>⭐  <span style="color: green;">5</span>⭐</p> 
+
+        <img  height="400px" width="400px" src="{{ url_for('static', filename='thankyou.png') }}" alt="thank you image">
         <!-- JavaScript for Text-to-Speech -->
         <script>
             // Function to speak the rating message
@@ -28,7 +48,7 @@
             // Tell the user their rating when the page loads
             window.onload = function () {
                 const rating = "{{ rating }}"; // Injected by Flask
-                speak('Thank you for your feedback! Your overall rating for the hotel is ' + rating + ' out of 5.');
+                speak('Thank you for your feedback! After Analysing your review we think you gave us ' + rating + 'stars out of 5.');
             };
         </script>
     </body>

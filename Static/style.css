@@ -1,36 +1,54 @@
+:root {
+  --black: #181818;
+}
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: rgb(222, 252, 240);
+}
+
+* {
+  color: var(--black);
+  transition: all 0.3s ease-in-out;
 }
 
 h1 {
-    color: #4CAF50;
+  font-size: 3rem;
 }
 
 form {
-    max-width: 400px;
-    margin: auto;
+  max-width: 400px;
+  margin: auto;
 }
 
 label {
-    display: block;
-    margin: 10px 0 5px;
+  display: block;
+  margin: 10px 0 5px;
 }
 
-input, select, button {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+input,
+select,
+button {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
+  background-color: rgb(24, 234, 157);
+  color: var(--black);
+  padding: 15px;
+  font-weight: bold;
+  font-size: 2rem;
+  margin-top: 1rem;
+  width: 100%;
+  border: 2px solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.2);
 }
-
 button:hover {
-    background-color: #45a049;
+  /* background-color: rgb(27, 198, 136); */
+  border: 2px solid rgb(0, 0, 0);
 }

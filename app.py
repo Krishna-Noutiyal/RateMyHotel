@@ -1,36 +1,40 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import pandas as pd
 from predict import predict_single_rating
 
 app = Flask(__name__)
 # Question list for feedback
 questions_list = [
-"Location and accessibility was as expected.",
-"Quality of service was as expectation.",
-"Room comfort and cleanliness was suitable.",
-"Facilities and amenities was proper.",
-"Food and beverage options was as expectation.",
-"Staff Behavior and management was good.",
-"Safety and security was as per norms of the hospitality.",
-"Fitness center facility was as expected.",
-"Foreign Language Knowledge Staff facility availability.",
-"Transport facility was as expectation.",
-"Internet and Wi-Fi facility was good.",
-"All the entertainment facilities was good.",
-"Value for money saved as compare to other.",
-"You will recommend this hotel facility to your friends."
+    "Location and accessibility was as expected.",
+    "Quality of service was as expectation.",
+    "Room comfort and cleanliness was suitable.",
+    "Facilities and amenities was proper.",
+    "Food and beverage options was as expectation.",
+    "Staff Behavior and management was good.",
+    "Safety and security was as per norms of the hospitality.",
+    "Fitness center facility was as expected.",
+    "Foreign Language Knowledge Staff facility availability.",
+    "Transport facility was as expectation.",
+    "Internet and Wi-Fi facility was good.",
+    "All the entertainment facilities was good.",
+    "Value for money saved as compare to other.",
+    "You will recommend this hotel facility to your friends.",
 ]
+
+app.secret_key = "Change this to your secret key !!"
 
 
 # Home route
 @app.route("/", methods=["GET", "POST"])
 def home():
+    session["HOTEL_NAME"] = "The X Residency"
+    session["LOCATION"] = "New Delhi"
+    session["COUNTRY"] = "India"
+
     if request.method == "POST":
-        name = request.form["name"]
-        email = request.form["email"]
-        # Append user data to database.csv
-        df = pd.DataFrame([[name, email]], columns=["Name", "Email"])
-        df.to_csv("Data/database.csv", mode="a", header=False, index=False)
+        session["NAME"] = request.form["name"]
+        session["EMAIL"] = request.form["email"]
+
         return redirect(url_for("feedback"))
     return render_template("home.html")
 
@@ -38,14 +42,25 @@ def home():
 # Feedback route
 @app.route("/feedback", methods=["GET", "POST"])
 def feedback():
+
+    # Redirects if user does not provide name and email
+    try:
+        if not session["NAME"] and session["EMAIL"]:
+            return redirect(url_for("home"))
+    except KeyError:
+        return redirect(url_for("home"))
+
     if request.method == "POST":
-        hotel_name = request.form["hotel_name"]
-        location = request.form["location"]
-        country = request.form["country"]
+
         questions_answers = [request.form[f"q{i}"] for i in range(1, 15)]
 
         # Create temp.csv with user feedback
-        feedback_data = [hotel_name, location, country] + questions_answers
+        feedback_data = [
+            session["HOTEL_NAME"],
+            session["LOCATION"],
+            session["COUNTRY"],
+        ] + questions_answers
+
         df = pd.DataFrame(
             [feedback_data],
             columns=[
@@ -80,6 +95,23 @@ def feedback():
 def thankyou():
     # Use predict_single_rating function to get the predicted rating
     rating = predict_single_rating("./Data/temp.csv")
+
+    # Clear database.csv
+    with open("Data/database.csv", "r+") as f:
+        f.seek(0)
+        line = f.readline()
+
+        if not line == "Name,Email,Rating\n":
+            print(line, line == "Name,Email,Rating\n")
+            f.seek(0)
+            f.truncate(1)
+            f.write("Name,Email,Rating\n")
+
+    # Append user data to database.csv
+    df = pd.DataFrame([[session["NAME"],session["EMAIL"], str(rating)]], columns=["Name", "Email", "Rating"])
+
+    df.to_csv("Data/database.csv", mode="a", header=False, index=False)
+
     return render_template("thankyou.html", rating=rating)
 
 

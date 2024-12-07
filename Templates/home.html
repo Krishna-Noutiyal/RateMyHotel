@@ -8,8 +8,12 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
 
-    <body>
-        <h1>Welcome to the Hotel Feedback System</h1>
+    <style>
+
+    </style>
+    <body >
+        <h1 style="text-align: center; font-size: 3rem; font-weight: bold;">The X Residency</h1>
+        <p style="text-align: center; font-size: 1.5rem; font-weight: bold;">Welcome to the Hotel Feedback System !! <br> Your feedback is important to us <br>Please enter your Name & Email.</p>
         <form method="POST">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required><br>
@@ -54,11 +58,11 @@
             }
 
             // Greet the user after a 3-second delay when the page loads
-            window.onload = function () {
-                setTimeout(function () {
-                    speak('Welcome to the Hotel Feedback System! Please enter your name and email.');
-                }, 3000);  // 3000 milliseconds = 3 seconds
-            };
+            // window.onload = function () {
+            //     setTimeout(function () {
+            //         speak('Welcome to the Hotel Feedback System!, Your feedback is important to us. Please enter your name and email.');
+            //     }, 3000);  // 3000 milliseconds = 3 seconds
+            // };
 
             // Refresh the voice list after the voices are loaded
             window.speechSynthesis.onvoiceschanged = function () {
